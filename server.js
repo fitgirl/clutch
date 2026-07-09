@@ -63,6 +63,63 @@ function baseUrl(req) {
   return `${req.protocol}://${req.get("host")}`;
 }
 
+/* ---------- Landsidentifiering via IP ----------
+   Avgör om besökaren har en svensk IP-adress eller ej, så att
+   frontend kan sätta engelska som standardspråk åt alla utanför
+   Sverige (utan att skriva över ett språkval besökaren redan gjort
+   manuellt — det sköts i app.js, se detectInitialLang()).
+
+   Slås upp via ip-api.com (gratis, ingen nyckel behövs för icke-
+   kommersiellt bruk) och cachas per IP i minnet i 24 timmar för att
+   hålla nere antalet anrop. Lokala/privata IP:er (utveckling) kan
+   inte slås upp och behandlas som "okänt land" — sajten faller då
+   tillbaka på svenska, precis som innan den här funktionen fanns. */
+
+const geoCache = new Map(); // ip -> { country, expires }
+const GEO_CACHE_TTL = 1000 * 60 * 60 * 24;
+
+// Städa bort utgångna cache-poster en gång i timmen så minnet inte
+// växer obegränsat på en långkörande server.
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, entry] of geoCache) {
+    if (entry.expires <= now) geoCache.delete(ip);
+  }
+}, 1000 * 60 * 60).unref();
+
+function isPrivateIp(ip) {
+  if (!ip) return true;
+  const clean = ip.replace(/^::ffff:/, "");
+  return (
+    clean === "::1" ||
+    clean === "127.0.0.1" ||
+    clean.startsWith("10.") ||
+    clean.startsWith("192.168.") ||
+    /^172\.(1[6-9]|2\d|3[0-1])\./.test(clean)
+  );
+}
+
+async function lookupCountry(ip) {
+  if (isPrivateIp(ip)) return null;
+
+  const cached = geoCache.get(ip);
+  if (cached && cached.expires > Date.now()) return cached.country;
+
+  try {
+    const res = await fetch(
+      `http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,countryCode`,
+      { signal: AbortSignal.timeout(2000) }
+    );
+    const data = await res.json();
+    const country = data.status === "success" ? data.countryCode : null;
+    geoCache.set(ip, { country, expires: Date.now() + GEO_CACHE_TTL });
+    return country;
+  } catch (err) {
+    console.error("Geo-uppslag misslyckades:", err.message);
+    return null;
+  }
+}
+
 /* ---------- Steg 1: skicka användaren till Steam ---------- */
 
 app.get("/auth/steam", (req, res) => {
@@ -164,9 +221,12 @@ app.get("/api/me", (req, res) => {
 
 /* ---------- Statiska filer ----------
    Endast public/ serveras — servern själv (server.js, package.json,
-   .env, node_modules) ligger utanför och kan aldrig hämtas via HTTP. */
+   .env, node_modules) ligger utanför och kan aldrig hämtas via HTTP.
+   index: false stänger av automatisk index.html-servering för "/",
+   så att den (liksom alla andra sidor) istället går via fallbacken
+   nedan och får sin geo-data injicerad. */
 
-app.use(express.static(path.join(__dirname, "public"), { extensions: ["html"] }));
+app.use(express.static(path.join(__dirname, "public"), { extensions: ["html"], index: false }));
 
 /* ---------- SPA-fallback ----------
    Varje flik (/spelare, /nyheter, /om) och varje spelare (/dvve,
@@ -174,10 +234,29 @@ app.use(express.static(path.join(__dirname, "public"), { extensions: ["html"] })
    HTML-fil per sida — routingen sker i frontend (app.js). Den här
    fallbacken gör att en direkt inladdning eller omladdning av en
    sådan URL ändå returnerar sidan (som sedan avgör vad som ska
-   visas utifrån URL:en), istället för ett 404-fel. */
+   visas utifrån URL:en), istället för ett 404-fel.
 
-app.get(/^\/(?!api\/|auth\/).*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+   Den läser också av besökarens land via IP (se lookupCountry ovan)
+   och skriver in det i sidan innan den skickas, så att app.js kan
+   välja startspråk direkt — utan en extra nätverksrundtur som annars
+   skulle ge en synlig blink av fel språk innan JS hinner växla. */
+
+let indexHtmlTemplate = null;
+function getIndexTemplate() {
+  if (!indexHtmlTemplate) {
+    indexHtmlTemplate = fs.readFileSync(path.join(__dirname, "public", "index.html"), "utf8");
+  }
+  return indexHtmlTemplate;
+}
+
+app.get(/^\/(?!api\/|auth\/).*/, async (req, res) => {
+  const country = await lookupCountry(req.ip);
+  const html = getIndexTemplate().replace(
+    "</head>",
+    `  <script>window.__GEO_COUNTRY__=${JSON.stringify(country)};</script>\n  </head>`
+  );
+  res.set("Content-Type", "text/html");
+  res.send(html);
 });
 
 app.listen(PORT, () => {
