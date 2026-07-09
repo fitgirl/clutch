@@ -1,8 +1,8 @@
 {
-  "name": "clutch",
+  "name": "peekr",
   "version": "1.0.0",
   "private": true,
-  "description": "Clutch — profildatabas med Steam-inloggning",
+  "description": "Peekr — profildatabas med Steam-inloggning",
   "type": "commonjs",
   "scripts": {
     "start": "node server.js"

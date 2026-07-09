@@ -1,5 +1,5 @@
 /* ============================================================
-   CLUTCH · profildatabas över svenska spelare
+   PEEKR · profildatabas över svenska spelare
    Rankning & statistik (HS%, ADR, K/D, ålder, lag): profilerr.net
    ("CS2 Pro Players / Sweden"). Foton, karriärfakta och roll för
    ett urval profiler är verifierade separat via Liquipedia.

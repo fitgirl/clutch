@@ -1,5 +1,5 @@
 /* ============================================================
-   Clutch — server med Steam-inloggning (OpenID 2.0)
+   Peekr — server med Steam-inloggning (OpenID 2.0)
    ============================================================
    Steams inloggning använder OpenID 2.0, inte OAuth — det finns
    ingen "registrerad app"/domänbegränsning, vilket gör att detta
@@ -181,7 +181,7 @@ app.get(/^\/(?!api\/|auth\/).*/, (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Clutch körs på http://localhost:${PORT}`);
+  console.log(`Peekr körs på http://localhost:${PORT}`);
   if (!STEAM_API_KEY) {
     console.log("OBS: STEAM_API_KEY är inte satt — inloggning fungerar men visar bara SteamID64, inget profilnamn/avatar.");
     console.log("Skaffa en gratis nyckel: https://steamcommunity.com/dev/apikey och kör: STEAM_API_KEY=din-nyckel npm start");

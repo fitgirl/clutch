@@ -1,5 +1,5 @@
 /* ============================================================
-   CLUTCH · profildatabas — rendering och navigation
+   PEEKR · profildatabas — rendering och navigation
    ============================================================ */
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -13,7 +13,7 @@ let currentLang = localStorage.getItem("scs_lang") === "en" ? "en" : "sv";
 
 const STRINGS = {
   sv: {
-    title: "Clutch — Profiler över svenska spelare",
+    title: "Peekr — Profiler över svenska spelare",
     meta_description: "Profildatabas över svenska CS2-spelare. Fakta, karriärer och statistik.",
     tagline: "Spelarprofiler",
     nav_home: "Start", nav_players: "Spelare", nav_news: "Nyheter", nav_about: "Om oss",
@@ -37,18 +37,18 @@ const STRINGS = {
     news_h1: "Nyheter",
     news_p: "Verifierade händelser kring spelarna i svensk CS2.",
     about_h1: "Om oss",
-    about_p: "Clutch är en inofficiell profildatabas som samlar svenska Counter-Strike-spelare på ett ställe.",
+    about_p: "Peekr är en inofficiell profildatabas som samlar svenska Counter-Strike-spelare på ett ställe.",
     about_players_h3: "Spelarna i centrum",
     about_players_p: "Varje spelare har en egen profil med fakta, karriär och statistik. Vi följer svenskarna oavsett var de spelar — från Brollan i MOUZ och REZ i GamerLegion till namnen längre ner på rankningen.",
     about_sources_h3: "Källor",
     about_sources_p: "Rankningen, statistiken, sociala länkar och spelarnas setup är hämtade från flera publika källor och stäms löpande av. Fält som saknas visas som \"Uppgift saknas\" — inget är påhittat.",
     about_contact_h3: "Kontakt",
-    about_contact_p: "Har du en rättelse eller ett tips om en spelare vi saknar? Hör av dig.<br>E-post: red@clutch.se<br>Sajten är inte ansluten till Valve Corporation, SECSGO eller någon av de omnämnda klubbarna.",
+    about_contact_p: "Har du en rättelse eller ett tips om en spelare vi saknar? Hör av dig.<br>E-post: red@peekr.se<br>Sajten är inte ansluten till Valve Corporation, SECSGO eller någon av de omnämnda klubbarna.",
     footer_brand_p: "Profildatabas över spelarna i svensk Counter-Strike 2 — karriärer och statistik. Inofficiell fansajt.",
     footer_players_h3: "Spelare", footer_all_players: "Alla spelare",
     footer_about_h3: "Om",
     footer_legal_h3: "Juridiskt", footer_terms: "Användarvillkor", footer_privacy: "Integritetspolicy", footer_cookies: "Cookies",
-    footer_copyright: "© 2026 Clutch. Alla rättigheter förbehållna.",
+    footer_copyright: "© 2026 Peekr. Alla rättigheter förbehållna.",
     footer_disclaimer: "Sajten är inte ansluten till Valve Corporation eller SECSGO. Counter-Strike är ett varumärke som tillhör Valve.",
     fact_fullname: "Fullständigt namn", fact_age: "Ålder", fact_nationality: "Nationalitet", country_sweden: "Sverige",
     fact_role: "Roll", fact_team: "Lag", fact_ranking: "Ranking",
@@ -78,7 +78,7 @@ const STRINGS = {
     steam_profile_label: "Steam-profil"
   },
   en: {
-    title: "Clutch — Profiles of Swedish players",
+    title: "Peekr — Profiles of Swedish players",
     meta_description: "Profile database for Swedish CS2 players. Facts, careers and stats.",
     tagline: "Player Profiles",
     nav_home: "Home", nav_players: "Players", nav_news: "News", nav_about: "About",
@@ -102,18 +102,18 @@ const STRINGS = {
     news_h1: "News",
     news_p: "Verified events around the players in Swedish CS2.",
     about_h1: "About us",
-    about_p: "Clutch is an unofficial profile database bringing together Swedish Counter-Strike players in one place.",
+    about_p: "Peekr is an unofficial profile database bringing together Swedish Counter-Strike players in one place.",
     about_players_h3: "Players first",
     about_players_p: "Every player has their own profile with facts, career and stats. We follow Swedes wherever they play — from Brollan at MOUZ and REZ at GamerLegion to the names further down the ranking.",
     about_sources_h3: "Sources",
     about_sources_p: "The ranking, stats, social links and player setups are pulled from several public sources and checked on an ongoing basis. Missing fields show as \"Not available\" — nothing is made up.",
     about_contact_h3: "Contact",
-    about_contact_p: "Spotted an error, or a player we're missing? Get in touch.<br>Email: red@clutch.se<br>This site is not affiliated with Valve Corporation, SECSGO, or any of the clubs mentioned.",
+    about_contact_p: "Spotted an error, or a player we're missing? Get in touch.<br>Email: red@peekr.se<br>This site is not affiliated with Valve Corporation, SECSGO, or any of the clubs mentioned.",
     footer_brand_p: "Profile database for the players of Swedish Counter-Strike 2 — careers and stats. Unofficial fan site.",
     footer_players_h3: "Players", footer_all_players: "All players",
     footer_about_h3: "About",
     footer_legal_h3: "Legal", footer_terms: "Terms of use", footer_privacy: "Privacy policy", footer_cookies: "Cookies",
-    footer_copyright: "© 2026 Clutch. All rights reserved.",
+    footer_copyright: "© 2026 Peekr. All rights reserved.",
     footer_disclaimer: "This site is not affiliated with Valve Corporation or SECSGO. Counter-Strike is a trademark of Valve.",
     fact_fullname: "Full name", fact_age: "Age", fact_nationality: "Nationality", country_sweden: "Sweden",
     fact_role: "Role", fact_team: "Team", fact_ranking: "Ranking",
