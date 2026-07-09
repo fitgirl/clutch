@@ -74,6 +74,7 @@ const STRINGS = {
     stats_empty: "Ingen statistik publicerad för den här spelaren ännu.",
     setup_h2: "Setup & inställningar",
     career_h2: "Karriär",
+    highlight_h2: "Senaste höjdpunkt",
     crosshair_label: "Crosshairkod",
     gear_mouse: "Mus", gear_keyboard: "Tangentbord", gear_headset: "Headset", gear_monitor: "Skärm",
     stat_ranking: "Ranking", stat_kd: "K/D", stat_adr: "ADR", stat_hs: "HS",
@@ -139,6 +140,7 @@ const STRINGS = {
     stats_empty: "No stats published for this player yet.",
     setup_h2: "Setup & settings",
     career_h2: "Career",
+    highlight_h2: "Recent highlight",
     crosshair_label: "Crosshair code",
     gear_mouse: "Mouse", gear_keyboard: "Keyboard", gear_headset: "Headset", gear_monitor: "Monitor",
     stat_ranking: "Ranking", stat_kd: "K/D", stat_adr: "ADR", stat_hs: "HS",
@@ -373,6 +375,19 @@ function renderProfile(nick) {
         </div>`).join("")}
     </div>` : "";
 
+  const highlightBlock = p.highlight ? `
+    <div class="section-head" style="margin-top:44px">
+      <div><h2>${t("highlight_h2")}</h2></div>
+    </div>
+    <div class="video-embed" style="aspect-ratio:${p.highlight.aspectRatio || "16 / 9"}">
+      <iframe src="https://player.vimeo.com/video/${p.highlight.vimeoId}?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        title="${p.highlight.title || ""}"
+        allowfullscreen></iframe>
+    </div>` : "";
+
   const setupBlock = p.setup ? `
     <div class="section-head" style="margin-top:44px">
       <div><h2>${t("setup_h2")}</h2></div>
@@ -410,6 +425,8 @@ function renderProfile(nick) {
     </div>
 
     ${p.bio ? `<p class="profile-bio">${tr(p, "bio")}</p>` : ""}
+
+    ${highlightBlock}
 
     <div class="section-head" style="margin-top:${p.bio ? "40" : "26"}px">
       <div><h2>${t("fakta_h2")}</h2></div>
