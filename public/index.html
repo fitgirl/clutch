@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="title">Clutch — Profiler över svenska spelare</title>
+  <meta name="description" data-i18n-attr="content:meta_description" content="Profildatabas över svenska CS2-spelare. Fakta, karriärer och statistik.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10'%3E%3Crect width='16' height='10' fill='%23005ea2'/%3E%3Crect x='4.5' width='2' height='10' fill='%23fecc02'/%3E%3Crect y='4' width='16' height='2' fill='%23fecc02'/%3E%3C/svg%3E">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="header">
+    <div class="container header__inner">
+      <a class="logo" href="#" data-nav="hem" aria-label="Clutch – startsida">
+        <svg class="logo__flag" width="26" height="16" viewBox="0 0 16 10" aria-hidden="true">
+          <rect width="16" height="10" fill="#005ea2"/>
+          <rect x="4.5" width="2" height="10" fill="#fecc02"/>
+          <rect y="4" width="16" height="2" fill="#fecc02"/>
+        </svg>
+        <span class="logo__word">
+          <span class="logo__name">Clutch</span>
+          <span class="logo__season" data-i18n="tagline">Spelarprofiler</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Huvudmeny">
+        <a href="#" data-nav="hem" class="nav__link is-active" data-i18n="nav_home">Start</a>
+        <a href="#" data-nav="spelare" class="nav__link" data-i18n="nav_players">Spelare</a>
+        <a href="#" data-nav="nyheter" class="nav__link" data-i18n="nav_news">Nyheter</a>
+        <a href="#" data-nav="omligan" class="nav__link" data-i18n="nav_about">Om oss</a>
+      </nav>
+
+      <div class="lang-switch" id="lang-switch" role="group" aria-label="Språk / Language">
+        <button type="button" data-lang="sv" class="is-active">SV</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+
+      <div id="auth-area" class="auth-area"><!-- JS --></div>
+    </div>
+  </header>
+
+  <!-- ===== Huvudinnehåll ===== -->
+  <main id="main">
+
+    <!-- ========== VY: START ========== -->
+    <section class="view is-visible" data-view="hem">
+
+      <!-- Sverigerankningen -->
+      <div class="band">
+        <div class="container band-grid">
+          <div class="band-intro">
+            <span class="label" data-i18n="home_rank_label">Sverigerankningen</span>
+            <h2 data-i18n="home_rank_h2">Sveriges bästa spelare just nu</h2>
+            <p data-i18n="home_rank_p">Svenska spelare rankade av redaktionen — från den internationella toppen till den inhemska scenen. Klicka på en spelare för hela profilen.</p>
+            <a href="#" class="more" data-nav="spelare" data-i18n="home_rank_link">Alla spelare →</a>
+          </div>
+          <ol class="ranklist" id="home-players"><!-- JS --></ol>
+        </div>
+      </div>
+
+      <!-- Fler nyheter -->
+      <div class="container section">
+        <div class="section-head">
+          <div>
+            <span class="label" data-i18n="home_news_label">Nyheter</span>
+            <h2 data-i18n="home_news_h2">Senaste om spelarna</h2>
+          </div>
+          <a href="#" class="more" data-nav="nyheter" data-i18n="home_news_link">Alla nyheter →</a>
+        </div>
+        <div class="tabs" id="news-filter">
+          <button class="is-active" data-tag="alla" data-i18n="tab_all">Alla</button>
+          <button data-tag="Lagbyten" data-i18n="tag_transfers">Lagbyten</button>
+          <button data-tag="Talanger" data-i18n="tag_talents">Talanger</button>
+          <button data-tag="Svensk CS" data-i18n="tag_swedishcs">Svensk CS</button>
+        </div>
+        <div class="newsgrid" id="home-news"><!-- JS --></div>
+      </div>
+
+    </section>
+
+    <!-- ========== VY: SPELARE ========== -->
+    <section class="view" data-view="spelare">
+      <div class="container">
+        <div class="page-head">
+          <h1 data-i18n="players_h1">Spelare</h1>
+          <p data-i18n="players_p">Sveriges 504 rankade CS2-spelare. Klicka på en spelare för hela profilen.</p>
+        </div>
+
+        <input type="search" class="search" id="player-search" data-i18n-placeholder="players_search_ph" placeholder="Sök på spelare, riktigt namn eller klubb..." aria-label="Sök spelare">
+
+        <div class="tablewrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th data-i18n="th_rank">#</th>
+                <th class="ta-l" data-i18n="th_player">Spelare</th>
+                <th class="ta-l" data-i18n="th_team">Lag</th>
+                <th class="hide-mobile" data-i18n="th_age">Ålder</th>
+                <th data-i18n="th_kd">K/D</th>
+              </tr>
+            </thead>
+            <tbody id="players-full"><!-- JS --></tbody>
+          </table>
+        </div>
+        <p class="footnote" data-i18n="players_footnote">Statistik saknas för vissa spelare.</p>
+
+        <div class="section-head" style="margin-top:48px">
+          <div>
+            <span class="label" data-i18n="players_focus_label">Just nu</span>
+            <h2 data-i18n="players_focus_h2">I fokus</h2>
+          </div>
+        </div>
+        <div class="focuslist" id="in-focus"><!-- JS --></div>
+      </div>
+    </section>
+
+    <!-- ========== VY: PROFIL ========== -->
+    <section class="view" data-view="profil">
+      <div class="container" id="profile-view"><!-- JS --></div>
+    </section>
+
+    <!-- ========== VY: NYHETER ========== -->
+    <section class="view" data-view="nyheter">
+      <div class="container">
+        <div class="page-head">
+          <h1 data-i18n="news_h1">Nyheter</h1>
+          <p data-i18n="news_p">Verifierade händelser kring spelarna i svensk CS2.</p>
+        </div>
+        <div class="newslist" id="news-full"><!-- JS --></div>
+      </div>
+    </section>
+
+    <!-- ========== VY: OM OSS ========== -->
+    <section class="view" data-view="omligan">
+      <div class="container">
+        <div class="page-head">
+          <h1 data-i18n="about_h1">Om oss</h1>
+          <p data-i18n="about_p">Clutch är en inofficiell profildatabas som samlar svenska Counter-Strike-spelare på ett ställe.</p>
+        </div>
+        <div class="prose-grid">
+          <div class="prose-block">
+            <h3 data-i18n="about_players_h3">Spelarna i centrum</h3>
+            <p data-i18n="about_players_p">Varje spelare har en egen profil med fakta, karriär och statistik. Vi följer svenskarna oavsett var de spelar — från Brollan i MOUZ och REZ i GamerLegion till namnen längre ner på rankningen.</p>
+          </div>
+          <div class="prose-block">
+            <h3 data-i18n="about_sources_h3">Källor</h3>
+            <p data-i18n="about_sources_p">Rankningen, statistiken, sociala länkar och spelarnas setup är hämtade från flera publika källor och stäms löpande av. Fält som saknas visas som "Uppgift saknas" — inget är påhittat.</p>
+          </div>
+          <div class="prose-block">
+            <h3 data-i18n="about_contact_h3">Kontakt</h3>
+            <p data-i18n-html="about_contact_p">Har du en rättelse eller ett tips om en spelare vi saknar? Hör av dig.<br>E-post: red@clutch.se<br>Sajten är inte ansluten till Valve Corporation, SECSGO eller någon av de omnämnda klubbarna.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Sidfot ===== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__col footer__col--brand">
+        <div class="logo">
+          <svg class="logo__flag" width="26" height="16" viewBox="0 0 16 10" aria-hidden="true">
+            <rect width="16" height="10" fill="#005ea2"/>
+            <rect x="4.5" width="2" height="10" fill="#fecc02"/>
+            <rect y="4" width="16" height="2" fill="#fecc02"/>
+          </svg>
+          <span class="logo__word">
+            <span class="logo__name">Clutch</span>
+          </span>
+        </div>
+        <p data-i18n="footer_brand_p">Profildatabas över spelarna i svensk Counter-Strike 2 — karriärer och statistik. Inofficiell fansajt.</p>
+      </div>
+      <div class="footer__col">
+        <h3 data-i18n="footer_players_h3">Spelare</h3>
+        <a href="#" data-nav="spelare" data-i18n="footer_all_players">Alla spelare</a>
+      </div>
+      <div class="footer__col">
+        <h3 data-i18n="footer_about_h3">Om</h3>
+        <a href="#" data-nav="omligan" data-i18n="nav_about">Om oss</a>
+        <a href="#" data-nav="nyheter" data-i18n="nav_news">Nyheter</a>
+      </div>
+      <div class="footer__col">
+        <h3 data-i18n="footer_legal_h3">Juridiskt</h3>
+        <a href="#" data-i18n="footer_terms">Användarvillkor</a>
+        <a href="#" data-i18n="footer_privacy">Integritetspolicy</a>
+        <a href="#" data-i18n="footer_cookies">Cookies</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <span data-i18n="footer_copyright">© 2026 Clutch. Alla rättigheter förbehållna.</span>
+        <span data-i18n="footer_disclaimer">Sajten är inte ansluten till Valve Corporation eller SECSGO. Counter-Strike är ett varumärke som tillhör Valve.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
