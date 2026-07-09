@@ -380,9 +380,9 @@ function renderProfile(nick) {
       <div><h2>${t("highlight_h2")}</h2></div>
     </div>
     <div class="video-embed" style="aspect-ratio:${p.highlight.aspectRatio || "16 / 9"}">
-      <iframe src="https://player.vimeo.com/video/${p.highlight.vimeoId}?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+      <iframe src="https://www.youtube.com/embed/${p.highlight.youtubeId}?rel=0"
         frameborder="0"
-        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerpolicy="strict-origin-when-cross-origin"
         title="${p.highlight.title || ""}"
         allowfullscreen></iframe>

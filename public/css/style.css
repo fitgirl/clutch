@@ -690,7 +690,7 @@ main { min-height: 60vh; }
 /* Videoklipp (t.ex. inbäddad Vimeo-highlight) */
 .video-embed {
   width: 100%;
-  max-width: 420px;
+  max-width: 480px;
   overflow: hidden;
   background: var(--bg-gray);
   border-radius: 4px;

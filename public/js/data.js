@@ -52,7 +52,7 @@ const PLAYERS = [
   { rank: 17, nick: "dvve", name: "Illia Melnyk", age: 15, team: "Danky Wanky", role: "Rifler", photo: "images/dvve.png", hs: 45, adr: 83, kd: 1.01,
     socials: { steam: "https://steamcommunity.com/id/73834837363453/", youtube: "https://www.youtube.com/@YoloMadeMeCool", tiktok: "https://www.tiktok.com/@yolomademecool_extra", twitter: "https://x.com/Egarhrtdc" },
     setup: { crosshair: "CSGO-VXDYX-uLYAJ-OUuZq-2fu8X-BYt4N" },
-    highlight: { vimeoId: "1208326863", aspectRatio: "1920 / 1838", title: "Svenska Elitserien CS2 — FINALER 2025 — Godsent vs" } },
+    highlight: { youtubeId: "WQOKtHN4x9o", aspectRatio: "4 / 3", title: "Svenska Elitserien CS2 | DVVE" } },
   { rank: 18, nick: "dennis", name: "Dennis Edman", age: 35, team: null, photo: "https://profilerr.net/static/content/thumbs/112x84/d/04/qfajgs---c4x3x200px0p-rc--d73c9d176da99da76a928fece447b04d.png", hs: 39, adr: 71.75, kd: 1.01,
     socials: { twitter: "https://twitter.com/denniscsgod", twitch: "https://twitch.tv/dennis", instagram: "https://instagram.com/dennisedman", steam: "https://steamcommunity.com/profiles/76561198068342553" },
     setup: { dpi: 400, sens: 2.0, edpi: 800, res: "1024x768 (4:3, sträckt)", mouse: "Razer DeathAdder V3 Pro", keyboard: "Razer Huntsman V2 TKL", headset: "Razer BlackShark V2 Pro", monitor: "ASUS ROG SWIFT PG259QN" } },
