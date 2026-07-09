@@ -421,8 +421,6 @@ function renderProfile(nick) {
 
     ${p.bio ? `<p class="profile-bio">${tr(p, "bio")}</p>` : ""}
 
-    ${highlightBlock}
-
     <div class="section-head" style="margin-top:${p.bio ? "40" : "26"}px">
       <div><h2>${t("fakta_h2")}</h2></div>
     </div>
@@ -436,7 +434,8 @@ function renderProfile(nick) {
 
     ${statBlock}
     ${setupBlock}
-    ${careerBlock}`;
+    ${careerBlock}
+    ${highlightBlock}`;
 }
 
 function showProfile(nick) {
