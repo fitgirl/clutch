@@ -75,7 +75,6 @@ const STRINGS = {
     setup_h2: "Setup & inställningar",
     career_h2: "Karriär",
     highlight_h2: "Senaste höjdpunkt",
-    highlight_play_label: "Spela upp klippet",
     crosshair_label: "Crosshairkod",
     gear_mouse: "Mus", gear_keyboard: "Tangentbord", gear_headset: "Headset", gear_monitor: "Skärm",
     stat_ranking: "Ranking", stat_kd: "K/D", stat_adr: "ADR", stat_hs: "HS",
@@ -142,7 +141,6 @@ const STRINGS = {
     setup_h2: "Setup & settings",
     career_h2: "Career",
     highlight_h2: "Recent highlight",
-    highlight_play_label: "Play the clip",
     crosshair_label: "Crosshair code",
     gear_mouse: "Mouse", gear_keyboard: "Keyboard", gear_headset: "Headset", gear_monitor: "Monitor",
     stat_ranking: "Ranking", stat_kd: "K/D", stat_adr: "ADR", stat_hs: "HS",
@@ -211,12 +209,6 @@ function sv(num, decimals = 2) {
 // (4:3, sträckt)") — byts ut mot "stretched" på engelska.
 function resLabel(res) {
   return currentLang === "en" ? res.replace("sträckt", "stretched") : res;
-}
-
-// Tolkar en aspect-ratio-sträng som "4 / 3" till ett decimaltal.
-function parseRatio(str) {
-  const [a, b] = str.split("/").map(s => parseFloat(s.trim()));
-  return a / b;
 }
 
 // Officiella ikonglyfer, källa: Simple Icons / Font Awesome (samma
@@ -383,32 +375,13 @@ function renderProfile(nick) {
         </div>`).join("")}
     </div>` : "";
 
-  const highlightBlock = p.highlight ? (() => {
-    const h = p.highlight;
-    const displayRatio = h.displayAspectRatio || h.videoAspectRatio || "16 / 9";
-    // Vissa klipp har svarta kantremsor inbrända i själva videofilen (från
-    // hur klippet exporterades). videoAspectRatio är den inbäddade
-    // spelarens faktiska form, displayAspectRatio är den synliga bildens
-    // form utan remsorna — skiljer de sig zoomas spelaren in så remsorna
-    // hamnar utanför den synliga rutan istället för att visas som svart.
-    const widthScale = h.videoAspectRatio
-      ? (parseRatio(h.videoAspectRatio) / parseRatio(displayRatio) * 100).toFixed(2)
-      : "100";
-    return `
+  const highlightBlock = p.highlight ? `
     <div class="section-head" style="margin-top:44px">
       <div><h2>${t("highlight_h2")}</h2></div>
     </div>
-    <div class="video-embed" style="aspect-ratio:${displayRatio}">
-      <button type="button" class="video-embed__poster"
-        style="background-image:url('https://i.ytimg.com/vi/${h.youtubeId}/hqdefault.jpg');background-size:${widthScale}% 100%"
-        data-youtube-id="${h.youtubeId}"
-        data-width-scale="${widthScale}"
-        data-title="${h.title || ""}"
-        aria-label="${t("highlight_play_label")}">
-        <span class="video-embed__play-icon" aria-hidden="true"></span>
-      </button>
-    </div>`;
-  })() : "";
+    <video class="video-embed" style="aspect-ratio:${p.highlight.aspectRatio || "16 / 9"}"
+      src="${p.highlight.video}" controls playsinline preload="metadata"
+      title="${p.highlight.title || ""}"></video>` : "";
 
   const setupBlock = p.setup ? `
     <div class="section-head" style="margin-top:44px">
@@ -632,20 +605,6 @@ function setLanguage(lang) {
 }
 
 document.addEventListener("click", (e) => {
-  const posterBtn = e.target.closest(".video-embed__poster");
-  if (posterBtn) {
-    const iframe = document.createElement("iframe");
-    iframe.src = `https://www.youtube.com/embed/${posterBtn.dataset.youtubeId}?rel=0&autoplay=1`;
-    iframe.title = posterBtn.dataset.title;
-    iframe.setAttribute("frameborder", "0");
-    iframe.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
-    iframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
-    iframe.setAttribute("allowfullscreen", "");
-    iframe.style.width = posterBtn.dataset.widthScale + "%";
-    posterBtn.replaceWith(iframe);
-    return;
-  }
-
   const langBtn = e.target.closest("#lang-switch button");
   if (langBtn) {
     setLanguage(langBtn.dataset.lang);
